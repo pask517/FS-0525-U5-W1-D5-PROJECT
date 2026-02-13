@@ -30,9 +30,12 @@ public class Reservation {
     @Column(nullable = false)
     private LocalDate reservationDate;
 
-    public Reservation(Employee reservationEmployee, Travel reservationTravel, LocalDate reservationDate) {
+    private String notes;
+
+    public Reservation(Employee reservationEmployee, Travel reservationTravel, LocalDate reservationDate, String notes) {
         this.reservationEmployee = reservationEmployee;
         this.reservationTravel = reservationTravel;
         this.reservationDate = reservationDate;
+        this.notes = notes;
     }
 }

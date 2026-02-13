@@ -38,7 +38,7 @@ public class ReservationsService {
             throw new BadRequestException("Il viaggio per cui stai prenotando non si effettua quel giorno");
         }
 
-        Reservation newReservation = new Reservation(this.employeesService.findById(UUID.fromString(payload.reservationEmployeeId())), this.travelsService.findById(UUID.fromString(payload.reservationTravelId())), payload.reservationDate());
+        Reservation newReservation = new Reservation(this.employeesService.findById(UUID.fromString(payload.reservationEmployeeId())), this.travelsService.findById(UUID.fromString(payload.reservationTravelId())), payload.reservationDate(), payload.notes());
 
         Reservation savedReservation = this.reservationsRepository.save(newReservation);
 

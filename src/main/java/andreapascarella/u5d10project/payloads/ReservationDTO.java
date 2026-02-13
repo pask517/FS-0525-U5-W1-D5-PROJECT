@@ -15,5 +15,8 @@ public record ReservationDTO(
 
         @NotNull(message = "La data del viaggio è un campo obbligatorio!")
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-        LocalDate reservationDate) {
+        LocalDate reservationDate,
+
+        String notes
+) {
 }
