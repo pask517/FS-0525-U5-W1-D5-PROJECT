@@ -25,9 +25,9 @@ public class EmployeesService {
     }
 
     public Employee saveEmployee(EmployeeDTO payload) {
-        this.employeesRepository.findByEmail(payload.email()).ifPresent(employee -> {
-            throw new BadRequestException("L'email " + employee.getEmail() + " è già in uso!");
-        });
+        if (this.employeesRepository.existsByEmail(payload.email())) {
+            throw new BadRequestException("L' email " + payload.email() + " é giá in uso!");
+        }
 
         Employee newEmployee = new Employee(payload.username(), payload.name(), payload.surname(), payload.email());
 

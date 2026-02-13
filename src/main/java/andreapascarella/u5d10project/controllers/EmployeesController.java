@@ -48,5 +48,4 @@ public class EmployeesController {
         return this.employeesService.findAll(page, size, orderBy, sortCriteria);
     }
 
-
 }
