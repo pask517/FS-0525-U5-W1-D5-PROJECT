@@ -5,6 +5,8 @@ import andreapascarella.u5d10project.exceptions.BadRequestException;
 import andreapascarella.u5d10project.exceptions.NotFoundException;
 import andreapascarella.u5d10project.payloads.EmployeeDTO;
 import andreapascarella.u5d10project.repositories.EmployeesRepository;
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -12,7 +14,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.util.Map;
 import java.util.UUID;
 
 
@@ -21,10 +26,12 @@ import java.util.UUID;
 public class EmployeesService {
 
     private final EmployeesRepository employeesRepository;
+    private final Cloudinary cloudinaryUploader;
 
     @Autowired
-    public EmployeesService(EmployeesRepository employeesRepository) {
+    public EmployeesService(EmployeesRepository employeesRepository, Cloudinary cloudinaryUploader) {
         this.employeesRepository = employeesRepository;
+        this.cloudinaryUploader = cloudinaryUploader;
     }
 
     public Employee saveEmployee(EmployeeDTO payload) {
@@ -56,5 +63,18 @@ public class EmployeesService {
     public Employee findById(UUID employeeId) {
         return this.employeesRepository.findById(employeeId)
                 .orElseThrow(() -> new NotFoundException(employeeId));
+    }
+
+    public String uploadAvatar(MultipartFile file) {
+        try {
+            Map result = cloudinaryUploader.uploader().upload(file.getBytes(), ObjectUtils.emptyMap());
+
+            String imageUrl = (String) result.get("secure_url");
+
+            return imageUrl;
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

@@ -27,7 +27,7 @@ public class ReservationsService {
 
     public Reservation saveReservation(ReservationDTO payload) {
         if (this.reservationsRepository.existsByReservationEmployeeAndReservationDate(this.employeesService.findById(UUID.fromString(payload.reservationEmployeeId())), payload.reservationDate())) {
-            throw new BadRequestException("L'utente " + this.employeesService.findById(UUID.fromString(payload.reservationEmployeeId())).getUsername() + " ha giá un'altra prenotazione fissata per quel giorno");
+            throw new BadRequestException("L'impiegato " + this.employeesService.findById(UUID.fromString(payload.reservationEmployeeId())).getUsername() + " ha giá un'altra prenotazione fissata per quel giorno");
         }
 
         if (this.travelsService.findById(UUID.fromString(payload.reservationTravelId())).isCompleted()) {
